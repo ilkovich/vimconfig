@@ -1,0 +1,14 @@
+        var ctl
+            , state  = { 
+                expected : 1
+                , state : 0
+            }
+        ;
+            
+        ctl = common.getController.call(this, ####, ####, common.findReturned(#));
+        ctl.actions.findFriends.call(ctl, common.request, common.response);
+        
+        beforeExit(funciton() {
+            assert.equal(state.completed, state.expected, String.format("Test not complete expected {0} != completed {1}", state.expected, state.completed));
+            log.info('Finished test get friends');
+        });

@@ -1,0 +1,12 @@
+        var methodName = 'AAAAAAAAAAAAAAAA', 
+            c = this.controller
+        ;
+        log.debugFormat('{0} - {1} Entering', c.className, methodName);
+        if(c.isResponseSuccess.call(this, err)) {
+                try {
+                        
+                } catch(e) {
+                        log.errorFormat("{0} - {1}\n{2}", c.className, methodName, e.stack);
+                        c.renderError(this.response, e.message);
+                }
+        }

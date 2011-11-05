@@ -1,0 +1,81 @@
+var common = require('./common')
+    , assert = require('assert')
+    , app = require('../app')
+    , _ = require('extjs-util')
+    , UserModel = require('../models/user').Model
+    , log = require('../loggly')
+    , should = require('should')
+    , ObjectId = require('mongoose').Schema.Types.ObjectId
+    , ####Model = require('../models/list').Model
+    , ####Controller = require('../controllers/list')
+;
+
+/**
+ * default user to run transactions as
+ */
+common.userSpec = {
+        "login" : "fb:5711176",
+        "fb" : {
+            "updatedTime" : "2011-04-21T21:44:13+0000",
+            "verified" : true,
+            "locale" : "en_US",
+            "timezone" : -4,
+            "gender" : "male",
+            "alias" : "profile.php?id=5711176",
+            "name" : {
+                "last" : "Ilkovich",
+                "first" : "Daniel",
+                "full" : "Daniel Ilkovich"
+            },
+            "accessToken" : "AAAEGbh8XMwQBAEfTZB0GVdYHqTWdPILwLcrS6NiSg8bbKiqvbiZCEZCd1amlmudndpuvLcZBsZAOl9VuSKt5J9KYwxnbiFNUXXHie39qIgAZDZD",
+            "id" : "5711176"
+        },
+        "_id" : "4e74eeea91a97cf64000000e"
+    };
+
+var otherUser = {
+    _id : 'otherUser012345678901234'
+    , fb : {
+        name : 'Other User'
+    }
+};
+common.models = [UserModel, ####Model];
+
+/**
+ * user model is almost always needed,
+ * add more models as necessary -- format
+ *
+ * {
+ *   arbitraryName : {
+ *      mdl : <model object>
+ *      , data : [<array of objects>]
+ *      , _createAs : <userObj> OPTIONAL
+ *   }
+ */
+common.fixtures = {
+    user : {
+        mdl: UserModel
+        ,data : [common.userSpec, otherUser]
+    }
+};
+
+common.tests = {
+//Tests go here.
+    'test user exists' : function(beforeExit) {
+        var ctl = common.getController.call(this, ####Model, ####Controller, common.findReturned(4));
+        var n = 0;
+        UserModel.model.find({_id  : '4e74eeea91a97cf64000000e'}, function(err, results) {
+            ++n;
+            assert.isNotNull(results);
+            results.should.have.property('length');
+            results.length.should.equal(1);
+            common.end();
+        });
+
+        beforeExit(function() {
+            assert.equal(1, n, 'Find was called.');
+            log.info('Finished test fixture');
+        });
+    }
+}
+common.run(exports);
