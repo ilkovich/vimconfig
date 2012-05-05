@@ -62,7 +62,7 @@ nnoremap <C-y> 3<C-y>
 "turn off search highlighting
 nmap <silent> <leader>n :silent :nohlsearch<CR>
 
-let g:SuperTabDefaultCompletionType = "context"
+" let g:SuperTabDefaultCompletionType = "context"
 
 set tabstop=4
 set shiftwidth=4
@@ -88,6 +88,10 @@ function! JavaScriptFold()
 endfunction
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
+au FileType html set foldmethod=indent
+au FileType css  set foldmethod=marker
+au FileType css  set foldmarker={,}
+
 
 "allow diffing rsync out files. 
 function! Diffb()
@@ -113,3 +117,38 @@ map <C-S-F> mzgg=G'z<CR>
 set diffopt+=iwhite
 set backupdir=/tmp
 set directory=/tmp
+
+noremap <C-S-Y> :FufBuffer<CR>
+
+"  move text and rehighlight -- vim tip_id=224 
+vnoremap > ><CR>gv 
+vnoremap < <<CR>gv 
+
+" Supertab settings
+" supertab + eclim == java win
+let g:SuperTabDefaultCompletionTypeDiscovery = [
+\ "&completefunc:<c-x><c-u>",
+\ "&omnifunc:<c-x><c-o>",
+\ ]
+let g:SuperTabLongestHighlight = 1
+
+" Eclim settings
+" ,i imports whatever is needed for current line
+nnoremap <silent> <LocalLeader>i :JavaImport<cr>
+" ,d opens javadoc for statement in browser
+nnoremap <silent> <LocalLeader>d :JavaDocSearch -x declarations<cr>
+" ,<enter> searches context for statement
+nnoremap <silent> <LocalLeader><cr> :JavaSearchContext<cr>
+" ,jv validates current java file
+nnoremap <silent> <LocalLeader>jv :Validate<cr>
+" ,jc shows corrections for the current line of java
+nnoremap <silent> <LocalLeader>jc :JavaCorrect<cr>
+" 'open' on OSX will open the url in the default browser without issue
+let g:EclimBrowser='open'
+
+"auto save / restore folds
+"au BufWinLeave * mkview
+"au BufWinEnter * silent loadview
+"
+
+au BufRead,BufNewFile *.inc set filetype=php

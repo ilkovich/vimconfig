@@ -1,0 +1,20 @@
+var sys = require('util')
+    , _   = require('extjs-util')
+    , Controller = require('../controller').Controller
+    , log = require('../loggly')
+;
+
+var AAAAAAAAAAAAAAAAAAAAAAAA = function(config) {
+    AAAAAAAAAAAAAAAAAAAAAAAA.super_.call(this, config);
+};
+
+sys.inherits(AAAAAAAAAAAAAAAAAAAAAAAA, Controller);
+
+Util.apply(AAAAAAAAAAAAAAAAAAAAAAAA.prototype, {
+    className : 'AAAAAAAAAAAAAAAAAAAAAAAA'
+    , actions : {
+    }   
+});
+
+module.exports = AAAAAAAAAAAAAAAAAAAAAAAA;
+
