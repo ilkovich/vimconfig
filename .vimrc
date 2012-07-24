@@ -152,3 +152,5 @@ let g:EclimBrowser='open'
 "
 
 au BufRead,BufNewFile *.inc set filetype=php
+
+set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
