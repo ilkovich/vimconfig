@@ -1,0 +1,46 @@
+<?php
+class ----------------- extends WireData implements Module {
+
+	public static function getModuleInfo() {
+		return array(
+            'title' => '------------', 
+            'version' => '0.1', 
+            'summary' => '---------------------------',
+			'singular' => true, 
+			'autoload' => true, 
+            'permission' => "page-view",
+			);
+	}
+
+    /**
+     * init 
+     *
+     * @access public
+     * @return void
+     */
+	public function init() {
+		parent::init();
+	}
+
+
+
+    /**
+     *  Module Implementation
+     */
+
+    /**
+     * ___install 
+     * Install the module
+     * @access public
+     * @return void
+     */
+	public function ___install() {
+		if(ProcessWire::versionMajor == 2 && ProcessWire::versionMinor < 1) {
+			throw new WireException("This module requires ProcessWire 2.1 or newer"); 
+		}
+	}
+
+	public function ___uninstall() {
+	}
+
+}
