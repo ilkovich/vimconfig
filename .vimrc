@@ -43,12 +43,6 @@ autocmd BufEnter build.ant noremap <buffer> <C-B> :!ant -f %<CR>
 noremap ,; <Esc>:redraw!<Cr> 
 
 noremap ,. @:
-"map <F11> :DbgStepInto<CR>
-"map <F10> :DbgStepOver<CR>
-"map <S-F11> :DbgStepOut<CR>
-"map <F5> :DbgRun<CR>
-"map <S-F5> :DbgDetach<CR>
-"map <C-F9> :DbgToggleBreakpoint<CR>
 
 inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i 
 nnoremap <C-P> :call PhpDocSingle()<CR> 
@@ -118,33 +112,13 @@ set diffopt+=iwhite
 set backupdir=/tmp
 set directory=/tmp
 
-noremap <C-S-Y> :FufBuffer<CR>
+noremap ,b :FufBuffer<CR>
+noremap ,t :FufTaggedFile<CR>
+noremap ,f :FufFile<CR>
 
 "  move text and rehighlight -- vim tip_id=224 
 vnoremap > ><CR>gv 
 vnoremap < <<CR>gv 
-
-" Supertab settings
-" supertab + eclim == java win
-let g:SuperTabDefaultCompletionTypeDiscovery = [
-\ "&completefunc:<c-x><c-u>",
-\ "&omnifunc:<c-x><c-o>",
-\ ]
-let g:SuperTabLongestHighlight = 1
-
-" Eclim settings
-" ,i imports whatever is needed for current line
-nnoremap <silent> <LocalLeader>i :JavaImport<cr>
-" ,d opens javadoc for statement in browser
-nnoremap <silent> <LocalLeader>d :JavaDocSearch -x declarations<cr>
-" ,<enter> searches context for statement
-nnoremap <silent> <LocalLeader><cr> :JavaSearchContext<cr>
-" ,jv validates current java file
-nnoremap <silent> <LocalLeader>jv :Validate<cr>
-" ,jc shows corrections for the current line of java
-nnoremap <silent> <LocalLeader>jc :JavaCorrect<cr>
-" 'open' on OSX will open the url in the default browser without issue
-let g:EclimBrowser='open'
 
 "auto save / restore folds
 "au BufWinLeave * mkview
@@ -152,5 +126,9 @@ let g:EclimBrowser='open'
 "
 
 au BufRead,BufNewFile *.inc set filetype=php
+au BufRead,BufNewFile *.module set filetype=php
 
-set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+"set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+set laststatus=2
+set statusline=%F[%{strlen(&fenc)?&fenc:'none'},%{&ff}]\ %{VisualSelectionSize()}\ %=%c,%l/%L\ %P
+
