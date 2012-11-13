@@ -41,8 +41,10 @@ autocmd FileType php noremap <C-L> :!/usr/bin/php -l %<CR>
 autocmd BufEnter build.ant noremap <buffer> <C-B> :!ant -f %<CR>
 
 noremap ,; <Esc>:redraw!<Cr> 
+noremap ,o <Esc>:FufFile<Cr>
 
 noremap ,. @:
+noremap '' <Esc>:cn<Cr>
 
 inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i 
 nnoremap <C-P> :call PhpDocSingle()<CR> 
@@ -56,7 +58,7 @@ nnoremap <C-y> 3<C-y>
 "turn off search highlighting
 nmap <silent> <leader>n :silent :nohlsearch<CR>
 
-" let g:SuperTabDefaultCompletionType = "context"
+"let g:SuperTabDefaultCompletionType = "context"
 
 set tabstop=4
 set shiftwidth=4
@@ -98,19 +100,41 @@ function! Diffb()
     diffthis
 endfunction 
 
-function! FormatFileForDiff()
-    %!grep '\.'
-    %!grep -v 'bson'
-    %s/\(.*\)/\/home\/ilkovich\/NetBeansProjects\/UrbanReach\/\1;scp:\/\/root@westport.thoughtvineinc.com\/\/home\/UrbanReach2\/www\/\1/g
-    map <F2> :call Diffb()<CR>
-endfunction
-
 "format (indent) whole file
 map <C-S-F> mzgg=G'z<CR>
 
 set diffopt+=iwhite
-set backupdir=/tmp
-set directory=/tmp
+set clipboard=unnamed
+
+function! Compile()
+  let origcurdir = getcwd()
+  let curdir     = origcurdir
+
+  while curdir != "/"
+  if filereadable("Makefile")
+    break
+  elseif filereadable("SConstruct")
+    break
+  endif
+  cd ..
+  let curdir= getcwd()
+  endwhile
+
+  if filereadable('Makefile')
+    set makeprg=make -j3 -k
+  elseif filereadable('SConstruct')
+    set makeprg=scons
+  else
+    set makeprg=make
+  endif
+  echo "building ... wait please!"
+  silent w
+  silent make
+  redraw!
+  cc!
+endfunction
+
+map ,m :call Compile()<CR>
 
 noremap ,b :FufBuffer<CR>
 noremap ,t :FufTaggedFile<CR>
@@ -132,3 +156,36 @@ au BufRead,BufNewFile *.module set filetype=php
 set laststatus=2
 set statusline=%F[%{strlen(&fenc)?&fenc:'none'},%{&ff}]\ %{VisualSelectionSize()}\ %=%c,%l/%L\ %P
 
+set clipboard=unnamed
+
+function! Compile()
+  let origcurdir = getcwd()
+  let curdir     = origcurdir
+
+  while curdir != "/"
+  if filereadable("Makefile")
+    break
+  elseif filereadable("SConstruct")
+    break
+  endif
+  cd ..
+  let curdir= getcwd()
+  endwhile
+
+  if filereadable('Makefile')
+    set makeprg=make -j3 -k
+  elseif filereadable('SConstruct')
+    set makeprg=scons
+  else
+    set makeprg=make
+  endif
+  echo "building ... wait please!"
+  silent w
+  silent make
+  redraw!
+  cc!
+endfunction
+
+map ,m :call Compile()<CR>
+
+set tags=tags;/
