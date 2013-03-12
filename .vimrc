@@ -151,6 +151,7 @@ vnoremap < <<CR>gv
 
 au BufRead,BufNewFile *.inc set filetype=php
 au BufRead,BufNewFile *.module set filetype=php
+au BufRead,BufNewFile *.scss set filetype=less
 
 "set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set laststatus=2
@@ -189,3 +190,6 @@ endfunction
 map ,m :call Compile()<CR>
 
 set tags=tags;/
+
+vmap "+y :!xclip -f -sel clip <CR>
+map "+p :r!xclip -o -sel clip <CR>
