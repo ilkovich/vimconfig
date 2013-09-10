@@ -1,0 +1,1 @@
+        echo "<pre>" . xdebug_print_function_stack() . "</pre>"; die();

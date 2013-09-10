@@ -193,3 +193,5 @@ set tags=tags;/
 
 vmap "+y :!xclip -f -sel clip <CR>
 map "+p :r!xclip -o -sel clip <CR>
+
+set t_Co=256;
