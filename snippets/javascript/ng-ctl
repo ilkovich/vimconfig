@@ -1,0 +1,18 @@
+define([ 'angular', 'BaseController'], function (angular, BaseController) {
+    var $scope;
+
+    /**
+     *  Building List Controller
+     */
+    var StubController = BaseController.extend({
+        init: function($rootScope, $_scope) {
+            $rootScope.ready = true;
+
+            $scope = $_scope;
+            this._super($scope);
+        }
+    });
+    StubController.$inject = ['$rootScope', '$scope'];
+
+    return StubController;
+});

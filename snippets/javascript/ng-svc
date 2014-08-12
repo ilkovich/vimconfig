@@ -1,0 +1,15 @@
+define([ 'angular', 'BaseService' ], function (angular, BaseService) {
+    /**
+     *  Stub Service
+     */
+    var StubService = BaseService.extend({
+        endpoint: 'admin/Stub'
+
+        , init: function( $injector) {
+            this._super.apply(this, arguments);
+        }
+    });
+    StubService.$inject = ['$injector'];
+
+    return StubService;
+});

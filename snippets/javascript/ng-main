@@ -1,0 +1,13 @@
+define([ 'angular', './StubController', './StubService'], function (angular, StubController, StubService) {
+    /**
+    *  Initialize module
+    */
+    return angular.module('app.main.stub', [
+        'app',
+        'app.main',
+        'restangular'
+    ])
+    .controller('StubController', StubController)
+    .service('StubService', StubService)
+    ;
+});

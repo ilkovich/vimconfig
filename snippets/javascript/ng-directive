@@ -1,0 +1,23 @@
+define([ 'angular', 'BaseDirective' ], function (angular, BaseDirective) {
+    /**
+     *  Stub Directive
+     */
+    var StubDirective = BaseDirective.extend({
+        config: {
+            restrict: 'A'
+            , scope: {}
+            , link: function(scope, element, attrs) {
+                this.scope = scope;
+                this.element = element;
+                this.attrs = attrs;
+            }
+        }
+        , init: function( $injector) {
+            this._super.apply(this, arguments);
+        }
+    });
+
+    return ['$injector', function($injector) {
+        return ( new StubDirective($injector) ).config;
+    }];
+});

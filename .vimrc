@@ -1,4 +1,3 @@
-color wombat
 syntax on 
 set number
 set ruler
@@ -41,7 +40,6 @@ autocmd FileType php noremap <C-L> :!/usr/bin/php -l %<CR>
 autocmd BufEnter build.ant noremap <buffer> <C-B> :!ant -f %<CR>
 
 noremap ,; <Esc>:redraw!<Cr> 
-noremap ,o <Esc>:FufFile<Cr>
 
 noremap ,. @:
 noremap '' <Esc>:cn<Cr>
@@ -136,9 +134,9 @@ endfunction
 
 map ,m :call Compile()<CR>
 
-noremap ,b :FufBuffer<CR>
-noremap ,t :FufTaggedFile<CR>
-noremap ,f :FufFile<CR>
+noremap ,b <Esc>:FufBuffer<CR>
+noremap ,t <Esc>:FufTaggedFile<CR>
+noremap ,o <Esc>:FufFile<Cr>
 
 "  move text and rehighlight -- vim tip_id=224 
 vnoremap > ><CR>gv 
@@ -155,43 +153,47 @@ au BufRead,BufNewFile *.scss set filetype=less
 
 "set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set laststatus=2
-set statusline=%F[%{strlen(&fenc)?&fenc:'none'},%{&ff}]\ %{VisualSelectionSize()}\ %=%c,%l/%L\ %P
+set statusline=%F[%{strlen(&fenc)?&fenc:'none'},%{&ff}]\ %{VisualSelectionSize()}\ %=%c,%l/%L\ %P\ %n
 
 set clipboard=unnamed
 
-function! Compile()
-  let origcurdir = getcwd()
-  let curdir     = origcurdir
-
-  while curdir != "/"
-  if filereadable("Makefile")
-    break
-  elseif filereadable("SConstruct")
-    break
-  endif
-  cd ..
-  let curdir= getcwd()
-  endwhile
-
-  if filereadable('Makefile')
-    set makeprg=make -j3 -k
-  elseif filereadable('SConstruct')
-    set makeprg=scons
-  else
-    set makeprg=make
-  endif
-  echo "building ... wait please!"
-  silent w
-  silent make
-  redraw!
-  cc!
-endfunction
-
-map ,m :call Compile()<CR>
-
 set tags=tags;/
+"let g:easytags_dynamic_files = 1
+"let g:easytags_async = 1
 
 vmap "+y :!xclip -f -sel clip <CR>
 map "+p :r!xclip -o -sel clip <CR>
 
 set t_Co=256;
+
+function s:find_jshintrc(dir)
+    let l:found = globpath(a:dir, '.jshintrc')
+    if filereadable(l:found)
+        return l:found
+    endif
+
+    let l:parent = fnamemodify(a:dir, ':h')
+    if l:parent != a:dir
+        return s:find_jshintrc(l:parent)
+    endif
+
+    return "~/.jshintrc"
+endfunction
+
+function UpdateJsHintConf()
+    let l:dir = expand('%:p:h')
+    let l:jshintrc = s:find_jshintrc(l:dir)
+    let g:syntastic_javascript_jshint_conf = l:jshintrc
+endfunction
+
+au BufEnter * call UpdateJsHintConf()
+
+let g:syntastic_html_tidy_ignore_errors=['proprietary attribute','trimming empty <i>', 'trimming empty <span']
+
+"surround lines with single qutoes
+let @q=':s/^\(\s*\)\(.*\)$/\1''\2'',/g'
+
+nnoremap QQ :qa<cr>
+
+colorscheme jellybeans
+
