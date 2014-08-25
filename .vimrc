@@ -195,5 +195,8 @@ let @q=':s/^\(\s*\)\(.*\)$/\1''\2'',/g'
 
 nnoremap QQ :qa<cr>
 
-colorscheme jellybeans
+"let g:solarized_termtrans=1
+let g:solarized_termcolors=256
+colorscheme wombat
+set background=dark
 
