@@ -66,6 +66,7 @@ set expandtab
 vmap r "_dP 
 
 nnoremap ,c :JSHint<CR>
+nnoremap ,n :NERDTreeToggle<CR>
 
 inoremap kj <Esc>
 
@@ -159,34 +160,36 @@ set clipboard=unnamed
 
 set tags=tags;/
 "let g:easytags_dynamic_files = 1
-"let g:easytags_async = 1
+let g:easytags_async = 1
 
 vmap "+y :!xclip -f -sel clip <CR>
 map "+p :r!xclip -o -sel clip <CR>
 
 set t_Co=256;
 
-function s:find_jshintrc(dir)
-    let l:found = globpath(a:dir, '.jshintrc')
+function Upfind(name, ...) 
+    if(a:0 > 0)
+        let l:dir = a:1
+    else
+        let l:dir   = expand('%:p:h')
+    endif
+
+    let l:found = globpath(l:dir, a:name)
     if filereadable(l:found)
         return l:found
     endif
 
-    let l:parent = fnamemodify(a:dir, ':h')
-    if l:parent != a:dir
-        return s:find_jshintrc(l:parent)
+    let l:parent = fnamemodify(l:dir, ':h')
+    if l:parent != l:dir
+        return Upfind(a:name, l:parent)
     endif
 
-    return "~/.jshintrc"
+    return "~/" + a:name
 endfunction
 
-function UpdateJsHintConf()
-    let l:dir = expand('%:p:h')
-    let l:jshintrc = s:find_jshintrc(l:dir)
-    let g:syntastic_javascript_jshint_conf = l:jshintrc
-endfunction
-
-au BufEnter * call UpdateJsHintConf()
+au BufEnter * let g:syntastic_javascript_jshint_args = Upfind('.jshintrc')
+au BufEnter * let g:NERDTreeBookmarksFile = Upfind('.NERDTreeBookmarks')
+au BufEnter * call g:NERDTreeBookmark.CacheBookmarks('/tmp/'+0)
 
 let g:syntastic_html_tidy_ignore_errors=['proprietary attribute','trimming empty <i>', 'trimming empty <span']
 
@@ -197,6 +200,6 @@ nnoremap QQ :qa<cr>
 
 "let g:solarized_termtrans=1
 let g:solarized_termcolors=256
-colorscheme wombat
+colorscheme solarized
 set background=dark
 
