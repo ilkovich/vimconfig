@@ -48,7 +48,6 @@ inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
 nnoremap <C-P> :call PhpDocSingle()<CR> 
 vnoremap <C-P> :call PhpDocRange()<CR> 
 
-noremap <silent> <F8> :TlistToggle<CR>
 let Tlist_GainFocus_On_ToggleOpen = 1
 
 nnoremap <C-e> 3<C-e>
@@ -65,7 +64,6 @@ set expandtab
 "allows replacing text with r character
 vmap r "_dP 
 
-nnoremap ,c :JSHint<CR>
 nnoremap ,n :NERDTreeToggle<CR>
 
 inoremap kj <Esc>
@@ -83,6 +81,8 @@ function! JavaScriptFold()
 endfunction
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
+au FileType javascript,css,less setl shiftwidth=2
+au FileType javascript,css,less setl tabstop=2
 au FileType html set foldmethod=indent
 au FileType css  set foldmethod=marker
 au FileType css  set foldmarker={,}
@@ -203,3 +203,19 @@ let g:solarized_termcolors=256
 colorscheme solarized
 set background=dark
 
+"ignore folder in vimgrep
+set wildignore+=node_modules/**
+
+let g:syntastic_mode_map = { 'mode': 'active',
+                            \ 'active_filetypes': ['python', 'javascript'],
+                            \ 'passive_filetypes': [] }
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']

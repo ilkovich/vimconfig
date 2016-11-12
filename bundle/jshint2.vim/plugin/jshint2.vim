@@ -155,12 +155,19 @@ function s:Lint(start, stop, show, flags)
 	endif
 
 	" get config path
-	let l:config = s:Find(l:path, s:config)
+	"let l:config = s:Find(l:path, s:config)
+    let l:config = "~/.jshintrc"
+    "s:Find("~", s:config)
+    " echo l:config
+    " echo l:path
+    " echo s:config
 
 	" save full shell command
-	let l:command = shellescape(l:binary).
-		\ (len(l:config) ? ' --config='.shellescape(l:config) : '').' '.s:arguments.
+    let l:command = shellescape(l:binary).
+		\ (len(l:config) ? ' --config '.l:config : '').' '.s:arguments.
 			\ ' '.(has('win32') || has('win64') ? '-' : '/dev/stdin') " https://github.com/Shutnik/jshint2.vim/issues/8
+    
+    echo l:command 
 
 	" save command flags
 	call setbufvar(l:buffer, 'jshint2_flags', a:flags)
