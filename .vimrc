@@ -219,4 +219,11 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_javascript_eslint_exe='$(npm bin)/eslint'
 
+nnoremap vv :r !pbpaste<CR>
 
+command Pretty :%!python -m json.tool
+
+let g:jsx_ext_required = 0
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+command LoadFiles :set errorformat=%f | cb
