@@ -11,7 +11,7 @@ set incsearch
 set visualbell "pc speaker to visual alert
 
 set nowrap
-set autochdir "ch dir to current buffer location
+"set autochdir "ch dir to current buffer location
 set hidden "manage multiple buffers effectively
 
 "tab completion
@@ -37,7 +37,7 @@ filetype plugin indent on
 
 " PHP parser check (CTRL-L)
 autocmd FileType php noremap <C-L> :!/usr/bin/php -l %<CR>
-autocmd BufEnter build.ant noremap <buffer> <C-B> :!ant -f %<CR>
+autocmd BufEnter * if &ft !~ '^nerdtree$' | silent! lcd %:p:h | endif
 
 noremap ,; <Esc>:redraw!<Cr> 
 
@@ -135,7 +135,7 @@ endfunction
 
 map ,m :call Compile()<CR>
 
-noremap ,b <Esc>:FufBuffer<CR>
+noremap ,b <Esc>:CtrlPBuffer<CR>
 noremap ,t <Esc>:FufTaggedFile<CR>
 noremap ,o <Esc>:FufFile<Cr>
 
@@ -155,8 +155,6 @@ au BufRead,BufNewFile *.scss set filetype=less
 "set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 set laststatus=2
 set statusline=%F[%{strlen(&fenc)?&fenc:'none'},%{&ff}]\ %{VisualSelectionSize()}\ %=%c,%l/%L\ %P\ %n
-
-set clipboard=unnamed
 
 set tags=tags;/
 "let g:easytags_dynamic_files = 1
@@ -189,7 +187,7 @@ endfunction
 
 au BufEnter * let g:syntastic_javascript_jshint_args = Upfind('.jshintrc')
 au BufEnter * let g:NERDTreeBookmarksFile = Upfind('.NERDTreeBookmarks')
-au BufEnter * call g:NERDTreeBookmark.CacheBookmarks('/tmp/'+0)
+" au BufEnter * call g:NERDTreeBookmark.CacheBookmarks('/tmp/'+0)
 
 let g:syntastic_html_tidy_ignore_errors=['proprietary attribute','trimming empty <i>', 'trimming empty <span']
 
@@ -216,6 +214,9 @@ set statusline+=%*
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exe='$(npm bin)/eslint'
+
+
